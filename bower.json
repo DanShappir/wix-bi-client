@@ -1,0 +1,25 @@
+{
+  "name": "wix-bi-client",
+  "main": "bi.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/DanShappir/wix-bi-client",
+  "authors": [
+    "Dan Shappir <dansh@wix.com>"
+  ],
+  "description": "Wix BI client library",
+  "keywords": [
+    "Wix",
+    "BI",
+    "library"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.json",
+    "node_modules",
+    "bower_components",
+    "Gruntfile.js",
+    "test",
+    "tests"
+  ]
+}
