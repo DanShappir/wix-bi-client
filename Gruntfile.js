@@ -28,7 +28,7 @@ module.exports = function (grunt) {
             },
             target: {
                 files: {
-                    'bi.min.js': ['bi.js']
+                    'dist/bi.min.js': ['bi.js']
                 }
             }
         }
