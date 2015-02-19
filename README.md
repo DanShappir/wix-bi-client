@@ -51,7 +51,23 @@ require(['bower_components/wix-bix-client/dist/bi.min'], function (bi) {
 });
 ```
 
-In addition to the base URL, a configuration object can be passed to the *bi* initialization
+In addition to the base URL, an optional configuration object can be passed to the *bi* initialization function.
+This object can have the following fields:
+
+**disabled** - Boolean: If *true* then BI messages are created, but not actually sent to the BI service. Default is *false*.
+**log** - Boolean: If *true* then BI messages are written to the console log. Default is *false*.
+**eventsEndpoint** - string: specifies default endpoint for events. If specified, event descriptors will be considered valid
+even if they don't contain an *endpoint* field.
+**errorsEndpoint** - string: specifies default endpoint for errors. If specified, error descriptors will be considered valid
+even if they don't contain an *endpoint* field.
+
+### Event / error descriptor
+Event and error descriptors are objects that specify the structure of events or error messages.
+
+**Event descriptors** have the following fields:
+*endpoint* - string: the target for the BI events
+*evid* - number: the numeric id of the specified event
+*fields* - object: optional specification of allowed field and types
 
 ### registerEvents
 All events **must** be registered before they can be used. Invoke *registerEvents* passing in an object containing event definitions as a JSON, or an array of event definitions.

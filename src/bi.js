@@ -19,10 +19,20 @@
     BIError.prototype = Object.create(Error.prototype);
     BIError.prototype.constructor = BIError;
 
+    /**
+     * Properly join to parts of a URL into one
+     * @param {string} base
+     * @param {string} extra
+     * @returns {string}
+     */
     function joinURL(base, extra) {
         return base.replace(/\/$/, '') + '/' + extra.replace(/^\//, '');
     }
 
+    /**
+     * Register collection of events or errors
+     * @param {object} descs - JSON or array of events/errors descriptors
+     */
     function register(descs) {
         if (Array.isArray(descs)) {
             descs.forEach(this);
@@ -31,6 +41,12 @@
         }
     }
 
+    /**
+     * Validate the proper structure of event/error fields
+     * @param {object} desc - event/error description. Optional fields property details expected
+     * @param {object} fields - data fieilds to be validated
+     * @returns {boolean} - true is validated, false otherwise
+     */
     function validateFields(desc, fields) {
         if (!desc.fields) {
             return true;
@@ -40,6 +56,11 @@
         });
     }
 
+    /**
+     * Create and initialize bi context
+     * @param {string} base - base URL of the BI service
+     * @param {object} [options] - configuration flags: disabled, log, eventsEndpoint, errorsEndpoint
+     */
     return function init(base, options) {
         options = options || {};
 
@@ -79,18 +100,28 @@
 
         var events = {};
 
+        /**
+         * Generate a unique has value for an event descriptor. Also usable as part of event URL
+         * @param {object} desc - event descriptor
+         * @returns {string} - event hash value
+         */
         function hashEvent(desc) {
-            var endpoint = desc.endpoint || options.eventsEndPoint || '';
+            var endpoint = desc.endpoint || options.eventsEndpoint || '';
             return endpoint + '?evid=' + desc.evid;
         }
 
+        /**
+         *
+         * @param {object} desc - event descriptor
+         * @returns {boolean} - event descriptor exists, and has required fields (evid and p
+         */
         function validateEventDesc(desc) {
-            return desc && desc.evid && (desc.endpoint || options.eventsEndPoint);
+            return desc && desc.evid && (desc.endpoint || options.eventsEndpoint);
         }
 
         function registerEvents() {
             function registerEvent(desc) {
-                if (!validateEventDesc(desc, options.eventsEndPoint)) {
+                if (!validateEventDesc(desc, options.eventsEndpoint)) {
                     throw new BIError('Invalid event structure', desc);
                 }
                 var id = hashEvent(desc);
@@ -132,17 +163,17 @@
         var errors = {};
 
         function hashError(desc) {
-            var endpoint = desc.endpoint || options.errorsEndPoint || '';
+            var endpoint = desc.endpoint || options.errorsEndpoint || '';
             return endpoint + '?errc=' + desc.errc;
         }
 
         function validateErrorDesc(desc) {
-            return desc && desc.errc && (desc.endpoint || options.errorsEndPoint);
+            return desc && desc.errc && (desc.endpoint || options.errorsEndpoint);
         }
 
         function registerErrors() {
             function registerError(desc) {
-                if (!validateErrorDesc(desc, options.eventsEndPoint)) {
+                if (!validateErrorDesc(desc, options.eventsEndpoint)) {
                     throw new BIError('Invalid event structure', desc);
                 }
                 var id = hashError(desc);
