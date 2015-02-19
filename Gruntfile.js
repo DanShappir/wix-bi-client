@@ -4,13 +4,13 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('bower.json'),
         clean: {
             main: {
-                src: ['bi.js']
+                src: ['src/bi.js']
             }
         },
         eslint: {
             all: {
                 src: [
-                    'bi.js'
+                    'src/*.js'
                 ]
             },
             teamcity: {
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
             },
             target: {
                 files: {
-                    'dist/bi.min.js': ['bi.js']
+                    'dist/bi.min.js': ['src/bi.js']
                 }
             }
         }

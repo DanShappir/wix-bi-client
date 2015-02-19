@@ -1,7 +1,7 @@
 {
   "name": "wix-bi-client",
-  "main": "bi.js",
-  "version": "0.0.2",
+  "main": "dist/bi.min.js",
+  "version": "0.0.3",
   "homepage": "https://github.com/DanShappir/wix-bi-client",
   "authors": [
     "Dan Shappir <dansh@wix.com>"
@@ -19,6 +19,7 @@
     "node_modules",
     "bower_components",
     "Gruntfile.js",
+    "index.html",
     "test",
     "tests"
   ]
