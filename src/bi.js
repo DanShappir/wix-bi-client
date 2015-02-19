@@ -6,7 +6,7 @@
     } else if (typeof module === 'object') {
         module.exports = factory(); //Node
     } else {
-        root.BI = factory(); //Browser
+        root.bi = factory(); //Browser
     }
 }(this, function () {
     'use strict';
@@ -27,7 +27,7 @@
         if (Array.isArray(descs)) {
             descs.forEach(this);
         } else {
-            register.call(this, Array.prototype.slice.call(arguments, 0));
+            register.call(this, Object.keys(descs).map(function (key) { return descs[key]; }));
         }
     }
 
@@ -80,12 +80,12 @@
         var events = {};
 
         function hashEvent(desc) {
-            var endPoint = desc.endPoint || options.eventsEndPoint || '';
-            return endPoint + '?evid=' + desc.evid;
+            var endpoint = desc.endpoint || options.eventsEndPoint || '';
+            return endpoint + '?evid=' + desc.evid;
         }
 
         function validateEventDesc(desc) {
-            return desc && desc.evid && (desc.endPoint || options.eventsEndPoint);
+            return desc && desc.evid && (desc.endpoint || options.eventsEndPoint);
         }
 
         function registerEvents() {
@@ -132,12 +132,12 @@
         var errors = {};
 
         function hashError(desc) {
-            var endPoint = desc.endPoint || options.errorsEndPoint || '';
-            return endPoint + '?errc=' + desc.errc;
+            var endpoint = desc.endpoint || options.errorsEndPoint || '';
+            return endpoint + '?errc=' + desc.errc;
         }
 
         function validateErrorDesc(desc) {
-            return desc && desc.errc && (desc.endPoint || options.errorsEndPoint);
+            return desc && desc.errc && (desc.endpoint || options.errorsEndPoint);
         }
 
         function registerErrors() {
