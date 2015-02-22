@@ -54,17 +54,18 @@ require(['bower_components/wix-bix-client/dist/bi.min'], function (bi) {
 In addition to the base URL, an optional configuration object can be passed to the *bi* initialization function.
 This object can have the following fields:
 
-* **disabled** - Boolean: If *true* then BI messages are created, but not actually sent to the BI service. Default is *false*.
-* **log** - Boolean: If *true* then BI messages are written to the console log. Default is *false*.
+* **disabled** - Boolean: if *true* then BI messages are created, but not actually sent to the BI service. Default is *false*.
+* **log** - Boolean: if *true* then BI messages are written to the console log. Default is *false*.
 * **eventsEndpoint** - string: specifies default endpoint for events. If specified, event descriptors will be considered valid
 even if they don't contain an *endpoint* field.
 * **errorsEndpoint** - string: specifies default endpoint for errors. If specified, error descriptors will be considered valid
 even if they don't contain an *endpoint* field.
+* **nnoCacheBuster - Boolean: if *true* prevents a cache buster from being appended to the URL. Default is *false*.
 
 ### Event / error descriptor
 Event and error descriptors are objects that specify the structure of events or error messages.
 
-* **Event descriptors** have the following fields:
+**Event descriptors** have the following fields:
 * *endpoint* - string: the target for the BI events
 * *evid* - number: the numeric id of the specified event
 * *fields* - object: optional specification of allowed field and types. Only fields that appear in the specification are allowed.
@@ -83,6 +84,40 @@ var events = {
 bix.registerEvents(events);
 ```
 
+**Error descriptors** have the following fields:
+* *endpoint* - string: the target for the BI events
+* *errc* - number: the numeric id of the specified error
+* *fields* - object: optional specification of allowed field and types. Only fields that appear in the specification are allowed.
+
 ### registerEvents
 All events **must** be registered before they can be used. Invoke *registerEvents* passing in an object containing event
-definitions as a JSON, or an array of event definitions.
+definitions as a JSON, or an array of event definitions. *registerEvents* can be invoked multiple times, with a cumulative affect.
+
+Registered event descriptors **must** be valid in order to be registered, otherwise a BIError will be thrown.
+An event descriptor is valid if:
+1. It's a valid JavaScript object
+2. It has an *evid* field
+3. It either has an *endpoint* field, or *eventsEndpoint* is defined on *options*
+4. The combination of *evid* and the endpoint is unique
+
+
+### event
+Send an event, previously registered using *registerEvents*
+
+```javascript
+var events = {
+    NOTIFY_START: {
+        endpoint: 'bi',
+        evid: 10,
+        fields: {
+            name: 'string',
+            age: 'number'
+        }
+    }
+};
+bix.registerEvents(events);
+bix.event(events.NOTIFY_START, {
+    name: 'Jim' // name is
+});
+```
+

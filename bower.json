@@ -1,7 +1,7 @@
 {
   "name": "wix-bi-client",
   "main": "dist/bi.min.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/DanShappir/wix-bi-client",
   "authors": [
     "Dan Shappir <dansh@wix.com>"

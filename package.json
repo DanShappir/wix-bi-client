@@ -1,6 +1,6 @@
 {
   "name": "wix-bi-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Wix BI client library",
   "main": "bi.js",
   "scripts": {

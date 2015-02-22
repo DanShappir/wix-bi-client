@@ -89,6 +89,11 @@
                 return field in exclude ? result : result + '&' + field + '=' + encode(fields[field]);
             }, url);
 
+            if (!options.noCacheBuster) {
+                var r = Math.floor(Math.random() * 1000);
+                url += '&c=' + Math.random() + r + Date.now();
+            }
+
             if (!options.disabled) {
                 var img = new Image();
                 img.src = url;
