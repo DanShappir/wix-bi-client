@@ -48,7 +48,7 @@
      * @returns {boolean} - true is validated, false otherwise
      */
     function validateFields(desc, fields) {
-        if (!desc.fields) {
+        if (!desc.fields || !fields) {
             return true;
         }
         return Object.keys(fields).every(function (field) {
@@ -148,6 +148,7 @@
         }
 
         function event(desc, fields) {
+            desc = desc || {};
             fields = fields || {};
 
             if (!validateEventDesc(desc)) {
@@ -208,6 +209,7 @@
         };
 
         function error(desc, fields) {
+            desc = desc || {};
             fields = fields || {};
 
             if (!validateErrorDesc(desc)) {

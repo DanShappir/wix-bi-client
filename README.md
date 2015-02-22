@@ -60,7 +60,9 @@ This object can have the following fields:
 even if they don't contain an *endpoint* field.
 * **errorsEndpoint** - string: specifies default endpoint for errors. If specified, error descriptors will be considered valid
 even if they don't contain an *endpoint* field.
-* **nnoCacheBuster - Boolean: if *true* prevents a cache buster from being appended to the URL. Default is *false*.
+* **noCacheBuster - Boolean: if *true* prevents a cache buster from being appended to the URL. Default is *false*.
+* **noRegistration** - Boolean: if *true* both events and errors do not need to be registered prior to being used.
+Default is *false*.
 
 ### Event / error descriptor
 Event and error descriptors are objects that specify the structure of events or error messages.
@@ -100,9 +102,13 @@ An event descriptor is valid if:
 3. It either has an *endpoint* field, or *eventsEndpoint* is defined on *options*
 4. The combination of *evid* and the endpoint is unique
 
-
 ### event
-Send an event, previously registered using *registerEvents*
+Send an event, previously registered using *registerEvents*. **event** accepts two parameters:
+1. A reference to the registered event descriptor
+2. An optional object specifying field values
+If a field object is specified it must be valid: if the event descriptor has a *field* specification,
+the types of the *fields* must match the specification.
+
 
 ```javascript
 var events = {
@@ -117,7 +123,41 @@ var events = {
 };
 bix.registerEvents(events);
 bix.event(events.NOTIFY_START, {
-    name: 'Jim' // name is
+    name: 'Jim' // name is a string
 });
 ```
 
+### registerErrors
+All errors **must** be registered before they can be used. Invoke *registerErrors* passing in an object containing error
+definitions as a JSON, or an array of error definitions. *registerErrors* can be invoked multiple times, with a cumulative affect.
+
+Registered error descriptors **must** be valid in order to be registered, otherwise a BIError will be thrown.
+An error descriptor is valid if:
+1. It's a valid JavaScript object
+2. It has an *errc* field
+3. It either has an *endpoint* field, or *errorsEndpoint* is defined on *options*
+4. The combination of *errc* and the endpoint is unique
+
+## error
+Send an event, previously registered using *registerEvents*. **event** accepts two parameters:
+1. A reference to the registered event descriptor
+2. An optional object specifying field values
+If a field object is specified it must be valid: if the event descriptor has a *field* specification,
+the types of the *fields* must match the specification.
+
+
+```javascript
+var errors = {
+    FAILED_INIT: {
+        endpoint: 'trg',
+        errc: 10,
+        fields: {
+            kind: 'number'
+        }
+    }
+};
+bix.registerErrors(errors);
+bix.error(errors.FAILED_INIT, {
+    kind: 42 // kind is a number
+});
+```
